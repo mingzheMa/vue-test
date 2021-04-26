@@ -1,7 +1,8 @@
 export default {
   router: {
+    middleware: "auth",
     extendRoutes(routes, resolve) {
-      console.log(routes);
+      // console.log(routes);
       // 注入命名视图
       const index = routes.findIndex(r => r.name === "index");
       routes[index] = {

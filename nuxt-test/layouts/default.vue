@@ -5,6 +5,15 @@
   </div>
 </template>
 
+<script>
+export default {
+  // middleware:"auth",
+  middleware() {
+    console.log("middleware", "在布局中调用");
+  }
+};
+</script>
+
 <style>
 html {
   font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI",
