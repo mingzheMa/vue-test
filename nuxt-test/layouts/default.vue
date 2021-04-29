@@ -1,13 +1,17 @@
 <template>
   <div>
-    <Nuxt name="ad" />
+    <Nav />
+    <!-- <Nuxt name="ad" /> -->
     <Nuxt />
   </div>
 </template>
 
 <script>
+import Nav from "./Nav/index.vue";
 export default {
   // middleware:"auth",
+  components: { Nav },
+
   middleware() {
     console.log("middleware", "在布局中调用");
   }

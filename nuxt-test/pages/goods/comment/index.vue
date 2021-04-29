@@ -1,0 +1,1 @@
+如果你想在点击comment时不默认显示第一个commen-id时创建一个index.vue的空文件即可

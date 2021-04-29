@@ -1,21 +1,21 @@
 export default {
   router: {
     middleware: "auth",
-    extendRoutes(routes, resolve) {
-      // console.log(routes);
-      // 注入命名视图
-      const index = routes.findIndex(r => r.name === "index");
-      routes[index] = {
-        ...routes[index],
-        components: {
-          default: routes[index].component,
-          ad: resolve(__dirname, "components/Ad.vue")
-        },
-        chunkNames: {
-          ad: "components/Ad"
-        }
-      };
-    }
+    // extendRoutes(routes, resolve) {
+    //   // console.log(routes);
+    //   // 注入命名视图
+    //   const index = routes.findIndex(r => r.name === "index");
+    //   routes[index] = {
+    //     ...routes[index],
+    //     components: {
+    //       default: routes[index].component,
+    //       ad: resolve(__dirname, "components/Ad.vue")
+    //     },
+    //     chunkNames: {
+    //       ad: "components/Ad"
+    //     }
+    //   };
+    // }
   },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
