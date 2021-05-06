@@ -1,6 +1,6 @@
 export default {
   router: {
-    middleware: "auth",
+    middleware: "auth"
     // extendRoutes(routes, resolve) {
     //   // console.log(routes);
     //   // 注入命名视图
@@ -35,7 +35,13 @@ export default {
   css: ["view-design/dist/styles/iview.css"],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ["@/plugins/view-ui"],
+  plugins: [
+    "@/plugins/view-ui",
+    // 只在客户端使用插件
+    { src: "@/plugins/vueUtil", ssr: false },
+    "@/plugins/appUtil",
+    "@/plugins/injectUtil"
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,

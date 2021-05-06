@@ -11,7 +11,9 @@ export default {
   name: "index",
 
   // middleware: "auth",
-  middleware() {
+  middleware({ app }) {
+    app.$console("app $console");
+    app.$injectConsole("app $injectConsole");
     console.log("middleware", "页面调用");
   },
 
@@ -23,12 +25,18 @@ export default {
     return true;
   },
 
-  async asyncData(context) {
+  async asyncData({ error }) {
     await new Promise(res => {
       setTimeout(res, 1000);
     });
 
     console.log("asyncData", "返回值混入data对象，用于请求数据");
+
+    // 调用error方法返回状态码
+    // error({
+    //   statusCode: 404,
+    //   message: "404"
+    // });
 
     return {
       a: 2,
@@ -49,6 +57,11 @@ export default {
 
   created() {
     console.log("created", "两端都会触发");
+  },
+
+  mounted() {
+    this.$injectConsole("vue $injectConsole");
+    this.$console("vue $console");
   },
 
   data() {
