@@ -40,7 +40,8 @@ export default {
     // 只在客户端使用插件
     { src: "@/plugins/vueUtil", ssr: false },
     "@/plugins/appUtil",
-    "@/plugins/injectUtil"
+    "@/plugins/injectUtil",
+    { src: "@/plugins/axios.serve", ssr: true }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -50,7 +51,20 @@ export default {
   buildModules: [],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: [],
+  modules: ["@nuxtjs/axios"],
+
+  // axios配置
+  axios: {
+    proxy: true
+  },
+
+  // 配置代理
+  proxy: {
+    // "/mock/":"https://getman.cn"
+    "/mock/": {
+      target: "https://getman.cn"
+    }
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {}
