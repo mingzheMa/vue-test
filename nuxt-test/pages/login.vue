@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { login } from "@/api/login.api";
+import { mapActions } from "vuex";
 
 export default {
   name: "login",
@@ -32,8 +32,10 @@ export default {
   },
 
   methods: {
+    ...mapActions("user", ["login"]),
+
     async submit() {
-      await login(this.form);
+      await this.login(this.form);
 
       this.$router.push("/");
     }
