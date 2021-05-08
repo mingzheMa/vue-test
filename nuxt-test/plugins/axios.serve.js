@@ -1,11 +1,13 @@
 export default function({ $axios, req, $cookie }) {
   // 请求拦截
   $axios.onRequest(config => {
-    const cookie = $cookie.parse(req.headers.cookie);
+    // const cookie = req.headers.cookie ? $cookie.parse(req.headers.cookie) : {};
 
-    if (cookie.token) {
-      config.headers.Authorization = cookie.token;
-    }
+    // if (cookie.token) {
+    //   config.headers.Authorization = cookie.token;
+    // }
+    config.headers.Authorization = "cookie.token";
+
     return config;
   });
 

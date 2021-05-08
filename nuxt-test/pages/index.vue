@@ -42,7 +42,6 @@ export default {
 
     // 获取本地数据
     const staticData = await $axios.get("/data/text.json");
-
     // 跨域数据
     const corsData = await $axios.get("/mock/route/to/demo");
 

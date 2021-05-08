@@ -20,7 +20,7 @@ import { login } from "@/api/login.api";
 export default {
   name: "login",
 
-  layout:"outside",
+  layout: "outside",
 
   data() {
     return {
@@ -33,13 +33,9 @@ export default {
 
   methods: {
     async submit() {
-      const token = await login(this.form);
+      await login(this.form);
 
-      document.cookie = this.$cookie.serialize("token", token, {
-        maxAge: 60 * 60 * 24
-      });
-      
-      this.$router.push("/")
+      this.$router.push("/");
     }
   }
 };
