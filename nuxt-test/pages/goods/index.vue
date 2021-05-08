@@ -27,6 +27,9 @@
 <script>
 export default {
   name: "goods",
+
+  transition: "goods",
+
   data() {
     return {};
   },

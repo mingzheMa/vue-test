@@ -1,0 +1,19 @@
+/* 默认路由动画 */
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.5s;
+}
+.page-enter,
+.page-leave-active {
+  opacity: 0;
+}
+
+.goods-enter-active,
+.goods-leave-active {
+  transition: all 0.5s;
+}
+.goods-enter,
+.goods-leave-active {
+  transform: translateY(100%);
+  opacity: 0;
+}
