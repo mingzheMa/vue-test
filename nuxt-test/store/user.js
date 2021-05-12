@@ -1,4 +1,4 @@
-import { login } from "@/api/login.api";
+import { login, whoAmI } from "@/api/login.api";
 
 export const state = () => ({
   userInfo: {}
@@ -19,7 +19,13 @@ export const mutations = {
 export const actions = {
   async login({ commit }, form) {
     const user = await login(form);
+
+    document.cookie = this.$cookie.serialize("token", user.token, {
+      maxAge: 60
+    });
+
     commit("setUserInfo", user);
+
     return user;
   },
 
@@ -27,7 +33,15 @@ export const actions = {
     document.cookie = this.$cookie.serialize("token", "", {
       maxAge: 0
     });
+
     commit("setUserInfo", {});
+
     this.$router.push("/login");
+  },
+
+  async whoAmI({ commit }, token) {
+    const user = await whoAmI(token);
+    commit("setUserInfo", user);
+    return user;
   }
 };
