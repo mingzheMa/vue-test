@@ -1,4 +1,3 @@
-// 权限校验白名单
 export default function({ $cookie, req, redirect }) {
   console.log(
     "middleware",

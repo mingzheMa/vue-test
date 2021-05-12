@@ -1,6 +1,6 @@
 export default {
   router: {
-    middleware: "auth"
+    middleware: "test"
     // extendRoutes(routes, resolve) {
     //   // console.log(routes);
     //   // 注入命名视图
@@ -32,7 +32,7 @@ export default {
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: ["view-design/dist/styles/iview.css","@/assets/css/page-active.css"],
+  css: ["view-design/dist/styles/iview.css", "@/assets/css/page-active.css"],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
@@ -51,11 +51,35 @@ export default {
   buildModules: [],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: ["@nuxtjs/axios"],
+  modules: ["@nuxtjs/axios", "@nuxtjs/auth-next"],
 
   // axios配置
   axios: {
     proxy: true
+  },
+
+  // 权限配置
+  auth: {
+    strategies: {
+      local: {
+        // token: {
+        //   maxAge: 3600
+        // }
+      },
+
+      cookie: {
+        cookie: {
+          // 校验会去查看cookie是否存在下面字段，如果不存在走redirect.login路线
+          name: "token"
+        }
+      }
+      // endpoints: {
+      //   csrf: {
+      //     // 在登录前请求下面路径
+      //     url: ""
+      //   }
+      // }
+    }
   },
 
   // 配置代理
@@ -66,7 +90,7 @@ export default {
     }
   },
 
-  loading:"@/components/PageLoading/index.vue",
+  loading: "@/components/PageLoading/index.vue",
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {}

@@ -28,6 +28,9 @@
 export default {
   name: "goods",
 
+  // 该中间件为@nuxtjs/auth-next库生成的中间件，在nuxt.config > auth配置
+  middleware: "auth",
+
   transition: "goods",
 
   data() {

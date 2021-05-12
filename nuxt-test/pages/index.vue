@@ -12,7 +12,7 @@
 export default {
   name: "index",
 
-  // middleware: "auth",
+  middleware: "test",
   middleware({ app }) {
     app.$console("app $console");
     app.$injectConsole("app $injectConsole");
