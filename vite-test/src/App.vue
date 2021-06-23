@@ -1,13 +1,7 @@
-<template>
-  <router-link to="/a">aaa</router-link>
-  <br />
-  <router-link to="/b">bbb</router-link>
-  <br />
-  <router-link to="/c">ccc</router-link>
-  <br />
-  <router-view />
-</template>
+<template>vue3</template>
 
-<script></script>
+<script lang="ts">
+  export default {};
+</script>
 
 <style></style>
