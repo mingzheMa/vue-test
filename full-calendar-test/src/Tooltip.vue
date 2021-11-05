@@ -1,8 +1,9 @@
 <template>
   <div class="tooltip">
-    <div class="tooltip__l"></div>
-    <div class="tooltip__r"></div>
-    <div></div>
+    <p>测试自定义tooltip组件</p>
+    <p>
+      {{ data }}
+    </p>
   </div>
 </template>
 
