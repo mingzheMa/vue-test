@@ -139,7 +139,7 @@ export default {
             : "";
 
           // 重新设定表头结构
-          info.el.firstElementChild.innerHTML = `
+          info.el.innerHTML = `
             <div class="full-calendar__custom-header ${isTodayClass}">
               <div class="full-calendar__custom-header__week">
                 ${week[mo.format("d")]}
