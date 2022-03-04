@@ -1,0 +1,154 @@
+.pdf-pages {
+  overflow: auto;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  &-box {
+    margin: 0 auto;
+  }
+
+  .pdf-page-container {
+    flex: none;
+    width: 800.67px;
+    height: 1132px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% 100%;
+    position: relative;
+    border: 1px solid;
+
+    .page-line {
+      display: block;
+      position: absolute;
+
+      &.page-line-x {
+        left: 0;
+        right: 0;
+        border-bottom: 1px dashed #0ea67c;
+      }
+
+      &.page-line-y {
+        top: 0;
+        bottom: 0;
+        border-right: 1px dashed #0ea67c;
+      }
+    }
+
+    .page-inner-field {
+      position: absolute;
+      box-sizing: border-box;
+      width: 150px;
+      height: 30px;
+      background: rgba(27, 196, 137, 0.12);
+      border: 1px dashed #0ea67c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+      cursor: move;
+
+      .inner-field-delete {
+        position: absolute;
+        top: -30px;
+        right: -30px;
+        width: 60px;
+        height: 60px;
+        z-index: 5;
+        display: none;
+
+        .delete-icon-wrap {
+          display: flex;
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          width: 16px;
+          height: 16px;
+          background-color: #f85951;
+          font-size: 16px;
+          border-radius: 50%;
+          cursor: pointer;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .xin-icon {
+          color: #ffffff;
+          font-size: 10px;
+        }
+      }
+
+      .field-point {
+        position: absolute;
+        width: 5px;
+        height: 5px;
+        background-color: #0ea67c;
+        display: block;
+        z-index: 10;
+
+        &.field-point-nw {
+          left: -5px;
+          top: -5px;
+          cursor: nwse-resize;
+        }
+
+        &.field-point-w {
+          left: -5px;
+          margin-top: -2.5px;
+          top: 50%;
+          cursor: ew-resize;
+        }
+
+        &.field-point-ws {
+          left: -5px;
+          bottom: -5px;
+          cursor: nesw-resize;
+        }
+
+        &.field-point-s {
+          bottom: -5px;
+          margin-left: -2.5px;
+          left: 50%;
+          cursor: ns-resize;
+        }
+
+        &.field-point-es {
+          bottom: -5px;
+          right: -5px;
+          cursor: nwse-resize;
+        }
+
+        &.field-point-e {
+          right: -5px;
+          margin-top: -2.5px;
+          top: 50%;
+          cursor: ew-resize;
+        }
+
+        &.field-point-ne {
+          right: -5px;
+          top: -5px;
+          cursor: nesw-resize;
+        }
+
+        &.field-point-n {
+          top: -5px;
+          margin-left: -2.5px;
+          left: 50%;
+          cursor: ns-resize;
+        }
+      }
+
+      &:hover {
+        .inner-field-delete {
+          display: flex;
+        }
+      }
+    }
+
+    &:not(:last-child) {
+      border-bottom: 1px solid #333;
+    }
+  }
+}
