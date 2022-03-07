@@ -41,7 +41,7 @@ export default class App extends Vue {
           {
             key: "3",
             name: "固定大小",
-            pos: [184, 938],
+            pos: [20, 20],
             w: 150,
             h: 28,
             minW: 28,
@@ -86,7 +86,7 @@ body {
 }
 
 .drag {
-  flex: 1;
+  width: 70%;
 }
 
 .options {

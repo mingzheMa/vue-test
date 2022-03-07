@@ -1,70 +1,81 @@
 <template>
-  <div class="pdf-pages" ref="scrollContentRef">
-    <div class="pdf-pages-box">
-      <template v-for="(page, index) in paletteConfig">
-        <div
-          class="pdf-page-container"
-          ref="pdfPageRefs"
-          :style="{
-            backgroundImage: `url(${page.img})`
-          }"
-          :key="index"
-          @dragover="e => e.preventDefault()"
-          @drop="handleFieldDrop($event, page, index)"
-        >
-          <!-- 辅助线 -->
-          <template v-if="moveField && moveData.pageIndex === index">
-            <span
-              class="page-line page-line-x"
-              :style="{ top: moveField.pos[1] + 'px' }"
-            />
-            <span
-              class="page-line page-line-y"
-              :style="{ left: moveField.pos[0] + 'px' }"
-            />
-          </template>
-          <ul>
-            <!-- 已拖入字段 -->
-            <li
-              class="page-inner-field"
-              v-for="(field, fIndex) in page.fields"
-              :key="fIndex"
-              :style="{
-                left: field.pos[0] + 'px',
-                top: field.pos[1] + 'px',
-                width: field.w + 'px',
-                height: field.h + 'px'
-              }"
-              @mousedown="handleFieldMovestart($event, field, index)"
-            >
-              <!-- 改变大小方向点 -->
-              <i
-                v-for="point in field.directions"
-                :key="point"
-                class="field-point"
-                :class="['field-point-' + point]"
-                @mousedown.stop="
-                  handleFieldDotMousedown($event, field, point, index)
-                "
-              ></i>
-              <!-- 删除按钮 -->
-              <div
-                class="inner-field-delete"
-                @click.stop="handleFieldDelete(page, fIndex)"
+  <div>
+    <input type="number" v-model="scale" />
+
+    <div class="pdf-pages" ref="scrollContentRef">
+      <div class="pdf-pages-box">
+        <template v-for="(page, index) in paletteConfig">
+          <div
+            class="pdf-page-container"
+            ref="pdfPageRefs"
+            :style="{
+              backgroundImage: `url(${page.img})`,
+              width: `${pageWidth}px`,
+              height: `${pageHeight}px`
+            }"
+            :key="index"
+            @dragover="e => e.preventDefault()"
+            @drop="handleFieldDrop($event, page, index)"
+          >
+            <!-- 辅助线 -->
+            <template v-if="moveField && moveData.pageIndex === index">
+              <span
+                class="page-line page-line-x"
+                :style="{ top: moveField.pos[1] + 'px' }"
+              />
+              <span
+                class="page-line page-line-y"
+                :style="{ left: moveField.pos[0] + 'px' }"
+              />
+            </template>
+            <ul>
+              <!-- 已拖入字段 -->
+              <li
+                class="page-inner-field"
+                v-for="(field, fIndex) in page.fields"
+                :key="fIndex"
+                :style="{
+                  left: field.pos[0] + 'px',
+                  top: field.pos[1] + 'px',
+                  width: field.w + 'px',
+                  height: field.h + 'px'
+                }"
+                @mousedown="handleFieldMovestart($event, field, index)"
               >
-                <span class="delete-icon-wrap">×</span>
-              </div>
-              {{ field.name }}
-            </li>
-          </ul>
-        </div>
-      </template>
+                <!-- 改变大小方向点 -->
+                <i
+                  v-for="point in field.directions"
+                  :key="point"
+                  class="field-point"
+                  :class="['field-point-' + point]"
+                  @mousedown.stop="
+                    handleFieldDotMousedown($event, field, point, index)
+                  "
+                ></i>
+
+                <!-- 删除按钮 -->
+                <div
+                  class="inner-field-delete"
+                  @click.stop="handleFieldDelete(page, fIndex)"
+                >
+                  <span class="delete-icon-wrap">×</span>
+                </div>
+
+                <!-- 内容 -->
+                <span :style="{ transform: `scale(${scale})` }">
+                  {{ field.name }}
+                </span>
+              </li>
+            </ul>
+          </div>
+        </template>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Ref, Vue } from "vue-property-decorator"
+import { Component, Prop, Ref, Vue, Watch } from "vue-property-decorator"
 
 import * as selfTypes from "./index.type"
 import * as selfUtils from "./index.utils"
@@ -83,8 +94,13 @@ export default class Drag extends Vue {
   })
   dragField!: selfTypes.TemplateFiled
 
-  pageWidth = 800.67
-  pageHeight = 1130
+  @Prop({
+    default: () => [800.67, 1130]
+  })
+  pageWH!: [number, number]
+
+  // 缩放比例
+  scale = 1
 
   // 画板配置
   paletteConfig: selfTypes.TemplatePage[] = []
@@ -99,6 +115,36 @@ export default class Drag extends Vue {
     y: 0,
     type: 1,
     d: ""
+  }
+
+  get pageWidth() {
+    return this.pageWH[0] * this.scale
+  }
+
+  get pageHeight() {
+    return this.pageWH[1] * this.scale
+  }
+
+  @Watch("scale", { immediate: true })
+  scaleChange(newScale: number, oldScale: number = this.scale) {
+    const configClone = _.cloneDeep(this.paletteConfig)
+
+    const configLen = configClone.length
+    for (let i = 0; i < configLen; i++) {
+      const fieldLen = configClone[i].fields.length
+      for (let j = 0; j < fieldLen; j++) {
+        const field = configClone[i].fields[j]
+
+        configClone[i].fields[j].w = (field.w / oldScale) * newScale
+        configClone[i].fields[j].h = (field.h / oldScale) * newScale
+        configClone[i].fields[j].minW = (field.minW / oldScale) * newScale
+        configClone[i].fields[j].minH = (field.minH / oldScale) * newScale
+        configClone[i].fields[j].pos[0] = (field.pos[0] / oldScale) * newScale
+        configClone[i].fields[j].pos[1] = (field.pos[1] / oldScale) * newScale
+      }
+    }
+
+    this.paletteConfig = configClone
   }
 
   mounted() {
@@ -260,6 +306,13 @@ export default class Drag extends Vue {
     const pagePos = selfUtils.getElementPagePosition(curPage)
     const field = _.cloneDeep(this.dragField)
 
+    // 按比例设置插入元素
+    field.w *= this.scale
+    field.h *= this.scale
+    field.minW *= this.scale
+    field.minH *= this.scale
+
+    // 设置元素定位
     let x = e.pageX - pagePos.x - field.w / 2
     let y = e.pageY - pagePos.y - field.h / 2 + scrollTop
     // 边界判断
@@ -267,8 +320,8 @@ export default class Drag extends Vue {
     if (y < 0) y = 0 // 上
     if (x > this.pageWidth - field.w) x = this.pageWidth - field.w // 右
     if (y > this.pageHeight - field.h) y = this.pageHeight - field.h // 下
-
     field.pos = [x, y]
+
     page.fields.push(field)
   }
 
@@ -288,6 +341,7 @@ export default class Drag extends Vue {
       type: 1,
       d: ""
     }
+    field.name = "123"
     this.moveField = field
     document.addEventListener("mousemove", this.moveListener)
   }
@@ -331,6 +385,28 @@ export default class Drag extends Vue {
   // 更新画板配置
   updatePaletteConfig(config: selfTypes.TemplatePage[]) {
     this.paletteConfig = config
+  }
+
+  // 获取画板配置
+  getPaletteConfig() {
+    const configClone = _.cloneDeep(this.paletteConfig)
+
+    const configLen = configClone.length
+    for (let i = 0; i < configLen; i++) {
+      const fieldLen = configClone[i].fields.length
+      for (let j = 0; j < fieldLen; j++) {
+        const field = configClone[i].fields[j]
+
+        configClone[i].fields[j].w = field.w / this.scale
+        configClone[i].fields[j].h = field.h / this.scale
+        configClone[i].fields[j].minW = field.minW / this.scale
+        configClone[i].fields[j].minH = field.minH / this.scale
+        configClone[i].fields[j].pos[0] = field.pos[0] / this.scale
+        configClone[i].fields[j].pos[1] = field.pos[1] / this.scale
+      }
+    }
+
+    return configClone
   }
 }
 </script>
