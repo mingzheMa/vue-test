@@ -10,9 +10,9 @@
           :validate-event="false"
         />
 
-        <el-button slot="reference">
+        <div slot="reference">
           <el-input v-model="form.value" />
-        </el-button>
+        </div>
       </el-popover>
     </el-form-item>
   </el-form>
